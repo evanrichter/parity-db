@@ -263,6 +263,9 @@ impl Options {
 				let salt_slice =
 					hex::decode(v).map_err(|_| Error::Corruption("Bad salt string".into()))?;
 				let mut s = Salt::default();
+				if salt_slice.len() != s.len() {
+					return Err(Error::Corruption("Bad salt string".into()))
+				}
 				s.copy_from_slice(&salt_slice);
 				salt = Some(s);
 			} else if k.starts_with("col") {
